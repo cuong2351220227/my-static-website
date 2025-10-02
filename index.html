@@ -2,27 +2,267 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông tin cá nhân</title>
-    <link rel="stylesheet" href="profile.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body{
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            background-size: 400% 400%;
+            animation: gradientBG 20s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveGrid 30s linear infinite;
+            opacity: 0.3;
+        }
+        
+        @keyframes gradientBG{
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 0 40px rgba(255, 255, 255, 0.1); }
+            50% { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3), 0 0 60px rgba(255, 255, 255, 0.2); }
+        }
+
+        .profile-card {
+            width: 450px;
+            padding: 50px 40px;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 0 40px rgba(255, 255, 255, 0.1);
+            animation: float 6s ease-in-out infinite, glow 4s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 30px;
+            padding: 2px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.4), rgba(255,255,255,0.1));
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+
+        .avatar-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+        
+        .avatar-container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), rgba(255,255,255,0.1));
+            animation: rotate 10s linear infinite;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .profile-card .avatar-container img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255,255,255,0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-card h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            letter-spacing: 2px;
+            font-weight: 700;
+            background: linear-gradient(to right, #fff, #f0f0f0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 30px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 300;
+        }
+
+        .info-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .info-item {
+            padding: 16px 24px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.08));
+            border-radius: 20px;
+            color: rgba(255,255,255,0.95);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .info-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.3));
+            transition: all 0.4s ease;
+        }
+        
+        .info-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .info-item:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.15));
+            transform: translateX(10px) scale(1.02);
+            border-color: rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .info-item:hover::before {
+            width: 6px;
+            background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0.6));
+        }
+        
+        .info-item:hover::after {
+            left: 100%;
+        }
+
+        .info-item .icon {
+            font-size: 24px;
+            min-width: 30px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+            transition: transform 0.3s ease;
+        }
+        
+        .info-item:hover .icon {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .info-item .value {
+            font-weight: 500;
+            flex: 1;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .decorative-line {
+            height: 2px;
+            width: 60px;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.5), transparent);
+            margin: 20px auto;
+        }
+    </style>
 </head>
 <body>
     <div class="profile-card">
-        <div class="avatar">
+        <div class="avatar-container">
             <img src="avatar.png" alt="Avatar">
         </div>
         <h2>TRẦN QUỐC CƯỜNG</h2>
-        <p class="name">Hà Tĩnh</p>
-        <p class="class">CLASS 23CT5</p>
-        <p class="major">Backend Development</p>
-        <p class="school">Danang Architecture University</p>
-        <p class="tech">Django</p>
-        <p class="lang">Python</p>
+        <div class="subtitle">Developer Profile</div>
+        <div class="decorative-line"></div>
         
-        <div class="action-buttons">
-            <a href="#" class="btn">Chỉnh sửa</a>
-            <a href="/login/" class="btn secondary">Đăng xuất</a>
+        <div class="info-container">
+            <div class="info-item">
+                <span class="icon">📍</span>
+                <span class="value">Hà Tĩnh</span>
+            </div>
+            <div class="info-item">
+                <span class="icon">🎓</span>
+                <span class="value">CLASS 23CT5</span>
+            </div>
+            <div class="info-item">
+                <span class="icon">💻</span>
+                <span class="value">Backend Development</span>
+            </div>
+            <div class="info-item">
+                <span class="icon">🏛️</span>
+                <span class="value">Danang Architecture University</span>
+            </div>
+            <div class="info-item">
+                <span class="icon">⚙️</span>
+                <span class="value">Django Framework</span>
+            </div>
+            <div class="info-item">
+                <span class="icon">🐍</span>
+                <span class="value">Python Language</span>
+            </div>
         </div>
     </div>
 </body>
 </html>
-
