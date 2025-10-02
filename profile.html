@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Thông tin cá nhân</title>
+    <link rel="stylesheet" href="{% static 'home/profile.css' %}">
+</head>
+<body>
+    <div class="profile-card">
+        <div class="avatar">
+            <img src="{% static 'home/avatar.png' %}" alt="Avatar">
+        </div>
+        <h2>TRẦN QUỐC CƯỜNG</h2>
+        <p class="name">Hà Tĩnh</p>
+        <p class="class">CLASS 23CT5</p>
+        <p class="major">Backend Development</p>
+        <p class="school">Danang Architecture University</p>
+        <p class="tech">Django</p>
+        <p class="lang">Python</p>
+        
+        <div class="action-buttons">
+            <a href="#" class="btn">Chỉnh sửa</a>
+            <a href="/login/" class="btn secondary">Đăng xuất</a>
+        </div>
+    </div>
+</body>
+</html>
