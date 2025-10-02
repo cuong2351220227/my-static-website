@@ -12,6 +12,8 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
+        
+        
         body{
             min-height: 100vh;
             display: flex;
@@ -20,20 +22,9 @@
             background: url('2151825794.jpg');
             background-size: 150% 150%, cover;
             background-position: center;
-            animation: gradientBG 200s ease infinite;
+            animation: gradientBG 30s ease infinite;
             overflow: hidden;
-        
-        }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: moveGrid 30s linear infinite;
-            opacity: 0.3;
+
         }
         
         @keyframes gradientBG{
